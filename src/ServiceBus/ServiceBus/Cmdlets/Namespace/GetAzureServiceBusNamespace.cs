@@ -58,6 +58,12 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Namespace
                     IEnumerable<PSNamespaceAttributes> namespaceList = Client.ListNamespaces(ResourceGroupName);
                     WriteObject(namespaceList.ToList(), true);
                 }
+                else if (string.IsNullOrEmpty(ResourceGroupName) && !string.IsNullOrEmpty(Name))
+                {
+                    // List namespace by requested name - as they're unique, this seems doable
+                    IEnumerable<PSNamespaceAttributes> namespace = Client.GetNamespace(ResourceGroupName);
+                    WriteObject(namespace);
+                }
                 else
                 {
                     // List all namespaces in the given subscription
