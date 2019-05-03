@@ -52,17 +52,17 @@ namespace Microsoft.Azure.Commands.ServiceBus.Commands.Namespace
                     PSNamespaceAttributes attributes = Client.GetNamespace(ResourceGroupName, Name);
                     WriteObject(attributes);
                 }
+                else if (string.IsNullOrEmpty(ResourceGroupName) && !string.IsNullOrEmpty(Name))
+                {
+                    // List namespace by requested name - as they're unique, this seems doable
+                    PSNamespaceAttributes attributes = Client.GetNamespace(ResourceGroupName);
+                    WriteObject(namespace);
+                }                
                 else if (!string.IsNullOrEmpty(ResourceGroupName) && string.IsNullOrEmpty(Name))
                 {
                     // List all namespaces in given resource group 
                     IEnumerable<PSNamespaceAttributes> namespaceList = Client.ListNamespaces(ResourceGroupName);
                     WriteObject(namespaceList.ToList(), true);
-                }
-                else if (string.IsNullOrEmpty(ResourceGroupName) && !string.IsNullOrEmpty(Name))
-                {
-                    // List namespace by requested name - as they're unique, this seems doable
-                    IEnumerable<PSNamespaceAttributes> namespace = Client.GetNamespace(ResourceGroupName);
-                    WriteObject(namespace);
                 }
                 else
                 {
