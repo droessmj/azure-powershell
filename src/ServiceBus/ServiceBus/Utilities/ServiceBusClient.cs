@@ -56,12 +56,16 @@ namespace Microsoft.Azure.Commands.ServiceBus
         }
 
         #region Namespace
-        public PSNamespaceAttributes GetNamespace(string resourceGroupName, string namespaceName)
+        public PSNamespaceAttributes GetNamespace(string namespaceName, string resourceGroupName = String.Empty)
         {
-            SBNamespace response = Client.Namespaces.Get(resourceGroupName, namespaceName);
+            if (resourceGroupName.IsNullOrEmpty()){
+                SBNamespace response = Client.Namespaces.Get(namespaceName);
+            }else{
+                SBNamespace response = Client.Namespaces.Get(resourceGroupName, namespaceName);                
+            }
             return new PSNamespaceAttributes(response);
         }
-
+     
         public IEnumerable<PSNamespaceAttributes> ListNamespaces(string resourceGroupName)
         {
             Rest.Azure.IPage<SBNamespace> response = Client.Namespaces.ListByResourceGroup(resourceGroupName);
